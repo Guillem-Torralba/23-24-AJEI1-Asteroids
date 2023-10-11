@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Alien2
+  - Alien3
+  - Ceiling
+  - Alien1
   layers:
   - Default
   - TransparentFX

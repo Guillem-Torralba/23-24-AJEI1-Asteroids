@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5435635197081984358}
   m_Layer: 0
   m_Name: Alien 2
-  m_TagString: Untagged
+  m_TagString: Alien2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,6 +122,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 5651552012745398311}
   Scoreworth: 20
+  alive: 1
+  Alienmanager: {fileID: 0}
+  score: {fileID: 0}
 --- !u!61 &5435635197081984358
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -151,7 +154,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
