@@ -8,14 +8,20 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        originalspeed = speed;
+        basemaxshots = maxshots;
+        vulnerable = true;
     }
+    float originalspeed = 0f;
     public float speed = 1.0f;
     float horizontal;
     public GameObject proyectil;
     public Animator anim;
     public int shotnum;
     public int maxshots;
+    int basemaxshots;
+    public bool vulnerable;
+
 
     // Update is called once per frame
     void Update()
@@ -33,10 +39,47 @@ public class Player : MonoBehaviour
             //    Debug.Log(shotnum.ToString());
             //}
         }
+        if (transform.position.x < -8.4 )
+        {
+            transform.position = new Vector3(-8.4f, transform.position.y, 0);
+        }
+        if (transform.position.x > 8.4)
+        {
+            transform.position = new Vector3(8.4f, transform.position.y, 0);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (vulnerable)
+        {
+            Debug.Log("ow");
+            if (collision.tag == "Alienshot")
+            {
+                StartCoroutine(die(true, collision));
+            }
+        }
     }
     void Shoot()
     {
         GameObject shot = Instantiate(proyectil, transform.position, Quaternion.identity);
         shot.GetComponent<Proyectil>().player = this;
+    }
+    public IEnumerator die(bool gotshot = false, Collider2D collision = null)
+    {
+        speed = 0f;
+        vulnerable = false;
+        anim.SetBool("Dying" , true);
+        maxshots = 0;
+        if(gotshot)
+        {
+            collision.GetComponent<Alienshot>().explode("player");
+        }
+        yield return new WaitForSeconds(1);
+        //TODO LIVES
+        anim.SetBool("Dying", false);
+        transform.position = new Vector3 (0, transform.position.y, 0);
+        speed = originalspeed;
+        maxshots = basemaxshots;
+        vulnerable = true;
     }
 }

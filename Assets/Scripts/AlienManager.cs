@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class AlienManager : MonoBehaviour
@@ -14,45 +15,40 @@ public class AlienManager : MonoBehaviour
     public int aliencount;
     public bool switching = false;
     public float direction = 1f;
-
+    public float basespeed = 1f;
+    public float speed= 0f;
+    public float shotperiod = 3;
+    public float shottimer = 0f;
+    bool donespawning = false;
     // Start is called before the first frame update
     void Start()
     {
-        //    for (int i = 0; i < 12; i++) {
-        //        GameObject temp = Instantiate(Alien1, new Vector3(i * 1 + startposX, 4f, 0), Quaternion.identity, this.transform);
-        //        AlienList.Add(temp.GetComponent<AlienMover>());
-        //        temp.GetComponent<AlienMover>().Alienmanager = this;
-        //        temp.GetComponent<AlienMover>().score = score;
-        //        temp = Instantiate(Alien2, new Vector3(i * 1 + startposX, 3f, 0), Quaternion.identity, this.transform);
-        //        AlienList.Add(temp.GetComponent<AlienMover>());
-        //        temp.GetComponent<AlienMover>().Alienmanager = this;
-        //        temp = Instantiate(Alien2, new Vector3(i * 1 + startposX, 2f, 0), Quaternion.identity, this.transform);
-        //        AlienList.Add(temp.GetComponent<AlienMover>());
-        //        temp.GetComponent<AlienMover>().Alienmanager = this;
-        //        temp = Instantiate(Alien3, new Vector3(i * 1 + startposX, 1f, 0), Quaternion.identity, this.transform);
-        //        AlienList.Add(temp.GetComponent<AlienMover>());
-        //        temp.GetComponent<AlienMover>().Alienmanager = this;
-        //        temp = Instantiate(Alien3, new Vector3(i * 1 + startposX, 0f, 0), Quaternion.identity, this.transform);
-        //        AlienList.Add(temp.GetComponent<AlienMover>());
-        //        temp.GetComponent<AlienMover>().Alienmanager = this;
-
-
-
+        StartCoroutine(SpawnAliens());
         //    }
-        SpawnRow(Alien1, 4f, 12);
-        SpawnRow(Alien2, 3f, 12);
-        SpawnRow(Alien2, 2f, 12);
-        SpawnRow(Alien3, 1f, 12);
-        SpawnRow(Alien3, 0f, 12);
+        shottimer = 0;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         aliencount = AlienList.Count;
-        animationspeed = (1 / (float)aliencount)/1.5f;
+        if (aliencount >= 1 && donespawning)
+        {
+            animationspeed = (1 / (float)aliencount) / 1.5f;
+            speed = basespeed * (1 / (float)aliencount);
+            
+            //alien shot timer
+            if (shottimer >= shotperiod)
+            {
+                AlienList[Random.Range(0, AlienList.Count)].shoot(Random.Range(1, 4));
+                shottimer -= shotperiod;
+            }
+            shottimer += Time.deltaTime;
+        }
+        transform.position += new Vector3(speed * direction, 0, 0) * Time.deltaTime;
     }
-    void SpawnRow(GameObject alientype, float startposY, int alienNum)
+    IEnumerator SpawnRow(GameObject alientype, float startposY, int alienNum)
     {
         for (int i = 0; i < alienNum; i++)
         {
@@ -60,11 +56,30 @@ public class AlienManager : MonoBehaviour
             AlienList.Add(temp.GetComponent<AlienMover>());
             temp.GetComponent<AlienMover>().Alienmanager = this;
             temp.GetComponent<AlienMover>().score = score;
+            yield return new WaitForSeconds(0.05f);
         }
     }
-    void GoDown(float downamount)
+    IEnumerator SpawnAliens()
     {
-        direction = -direction;
+        StartCoroutine(SpawnRow(Alien3, 0f, 12));
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(SpawnRow(Alien3, 1f, 12));
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(SpawnRow(Alien2, 2f, 12));
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(SpawnRow(Alien2, 3f, 12));
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(SpawnRow(Alien1, 4f, 12));
+        yield return new WaitForSeconds(2);
+        donespawning = true;
 
+    }
+    public IEnumerator GoDown(float downamount)
+    {
+        switching = true;
+        direction = -direction;
+        transform.position += new Vector3(0, -downamount, 0);
+        yield return new WaitForSeconds(0.1f);
+        switching = false;
     }
 }

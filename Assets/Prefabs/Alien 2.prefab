@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5651552012745398311}
   - component: {fileID: 757896338555552966}
   - component: {fileID: 5435635197081984358}
+  - component: {fileID: -8209519264673250323}
   m_Layer: 0
   m_Name: Alien 2
   m_TagString: Alien2
@@ -120,6 +121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae143ffe325477b49a51e3b031fabd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alienshot1: {fileID: 6853647274688214985, guid: 7ac4c09d21ffea5469d6e1611283c8c4, type: 3}
+  alienshot2: {fileID: 4791546840402284582, guid: 619050524a4d4b044aa273dd82aaa17b, type: 3}
+  alienshot3: {fileID: 1307850240415233955, guid: 10d0fc678f9bae84ab65d673e3e94ced, type: 3}
+  rb: {fileID: -8209519264673250323}
   anim: {fileID: 5651552012745398311}
   Scoreworth: 20
   alive: 1
@@ -170,3 +175,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.73333335, y: 0.53333336}
   m_EdgeRadius: 0
+--- !u!50 &-8209519264673250323
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8767704746752786052}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -8,6 +8,9 @@ TagManager:
   - Alien3
   - Ceiling
   - Alien1
+  - wall
+  - Alienshot
+  - floor
   layers:
   - Default
   - TransparentFX

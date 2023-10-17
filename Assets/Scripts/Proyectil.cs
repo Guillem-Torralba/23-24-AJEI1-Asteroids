@@ -46,9 +46,13 @@ public class Proyectil : MonoBehaviour
             {
                 explode("ceiling");
             }
+            else if (collision.tag == "Alienshot")
+            {
+                explode("alienshot", collision);
+            }
         }
     }
-    void explode(string explosiontype)
+    void explode(string explosiontype, Collider2D collision = null)
     {
         functional = false;
         player.shotnum--;
@@ -58,18 +62,27 @@ public class Proyectil : MonoBehaviour
             // anim.SetBool("explodin", true);
             Destroy(gameObject);
         }
-        if (explosiontype == "barrier")
+        else if (explosiontype == "barrier")
         {
             speed = 0f;
             anim.SetBool("explodin", true);
             Destroy(gameObject, 0.5f);
         }
-        if (explosiontype == "ceiling")
+        else if (explosiontype == "ceiling")
         {
             speed = 0f;
             anim.SetBool("explodin", true);
             Destroy(gameObject, 0.5f);
         }
+        else if (explosiontype == "alienshot")
+        {
+            speed = 0f;
+            anim.SetBool("explodin", true);
+            Destroy(gameObject, 0.5f);
+            collision.GetComponent<Alienshot>().explode("floor");
+        }
+        else
+            Destroy(gameObject);
     }
 
 }
