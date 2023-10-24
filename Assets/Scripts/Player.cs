@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     public int shotnum;
     public int maxshots;
     int basemaxshots;
+    public Lives lives;
     public bool vulnerable;
 
 
@@ -52,10 +54,14 @@ public class Player : MonoBehaviour
     {
         if (vulnerable)
         {
-            Debug.Log("ow");
-            if (collision.tag == "Alienshot")
+            if (collision.tag == "Alienshot" && collision.GetComponent<Alienshot>().functional == true) 
             {
                 StartCoroutine(die(true, collision));
+            }
+            if (collision.tag == "Alien1" || collision.tag == "Alien2" || collision.tag == "Alien3")
+            {
+                StartCoroutine(die());
+
             }
         }
     }
@@ -74,10 +80,25 @@ public class Player : MonoBehaviour
         {
             collision.GetComponent<Alienshot>().explode("player");
         }
+        lives.Losealife();
         yield return new WaitForSeconds(1);
-        //TODO LIVES
+        if (lives.lives > 0)
+        {
+            Respawn();
+        }
+        else
+        {
+            Destroy(gameObject);
+            yield return new WaitForSeconds(3);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        
+    }
+    public void Respawn()
+    {
         anim.SetBool("Dying", false);
-        transform.position = new Vector3 (0, transform.position.y, 0);
+        transform.position = new Vector3(0, transform.position.y, 0);
         speed = originalspeed;
         maxshots = basemaxshots;
         vulnerable = true;

@@ -24,9 +24,13 @@ public class Alienshot : MonoBehaviour
         {
             explode("floor");
         }
+        else if (collision.tag == "Barrera")
+        {
+            explode("barrier", collision);
+        }
     }
 
-    public void explode(string explosiontype)
+    public void explode(string explosiontype, Collider2D collision = null)
     {
         functional = false;
         if (explosiontype == "player")
@@ -39,6 +43,7 @@ public class Alienshot : MonoBehaviour
         {
             speed = 0f;
             anim.SetBool("explodin", true);
+            collision.GetComponent<Barrera>().destructionstate++;
             Destroy(gameObject, 0.5f);
         }
         else if (explosiontype == "floor")

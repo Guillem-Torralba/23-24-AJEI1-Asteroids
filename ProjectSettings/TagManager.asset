@@ -11,6 +11,8 @@ TagManager:
   - wall
   - Alienshot
   - floor
+  - UFO
+  - Barrera
   layers:
   - Default
   - TransparentFX

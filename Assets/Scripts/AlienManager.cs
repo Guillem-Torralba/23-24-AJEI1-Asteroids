@@ -8,6 +8,7 @@ public class AlienManager : MonoBehaviour
     public GameObject Alien1;
     public GameObject Alien2;
     public GameObject Alien3;
+    public GameObject UFO;
     public float startposX = 4;
     public List<AlienMover> AlienList;
     public Score score;
@@ -19,14 +20,15 @@ public class AlienManager : MonoBehaviour
     public float speed= 0f;
     public float shotperiod = 3;
     public float shottimer = 0f;
+    public float ufoperiod = 10;
+    public float ufotimer = 10;
     bool donespawning = false;
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(SpawnAliens());
-        //    }
         shottimer = 0;
-
+        ufotimer = 0;
     }
 
     // Update is called once per frame
@@ -44,7 +46,22 @@ public class AlienManager : MonoBehaviour
                 AlienList[Random.Range(0, AlienList.Count)].shoot(Random.Range(1, 4));
                 shottimer -= shotperiod;
             }
+            if (ufotimer >= ufoperiod)
+            {
+                CreateUfo();
+                ufotimer -= ufoperiod;
+            }
             shottimer += Time.deltaTime;
+            ufotimer += Time.deltaTime;
+        }
+        if (donespawning && aliencount <= 0)
+        {
+            transform.position = Vector3.zero;
+            speed = 0;
+            donespawning = false;
+            
+            StartCoroutine(SpawnAliens());
+
         }
         transform.position += new Vector3(speed * direction, 0, 0) * Time.deltaTime;
     }
@@ -81,5 +98,12 @@ public class AlienManager : MonoBehaviour
         transform.position += new Vector3(0, -downamount, 0);
         yield return new WaitForSeconds(0.1f);
         switching = false;
+    }
+    public void CreateUfo()
+    {
+        GameObject temp = Instantiate(UFO, new Vector3(10, 5, 0), Quaternion.identity);
+        temp.GetComponent<UfoMover>().Alienmanager = this;
+        temp.GetComponent<UfoMover>().score = score;
+        Destroy(temp, 10f);
     }
 }

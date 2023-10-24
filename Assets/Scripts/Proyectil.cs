@@ -30,7 +30,7 @@ public class Proyectil : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("touched " + collision.tag);
+        // Debug.Log("touched " + collision.tag);
         if (functional)
         {
             if (collision.tag == "Alien1" || collision.tag == "Alien2" || collision.tag == "Alien3")
@@ -42,6 +42,14 @@ public class Proyectil : MonoBehaviour
                     collision.GetComponent<AlienMover>().die();
                 }
             }
+            else if (collision.tag == "UFO")
+            {
+                if (collision.GetComponent<UfoMover>().alive == true)
+                {
+                    explode("alien");
+                    collision.GetComponent <UfoMover>().die();
+                }
+            }
             else if (collision.tag == "Ceiling")
             {
                 explode("ceiling");
@@ -49,6 +57,10 @@ public class Proyectil : MonoBehaviour
             else if (collision.tag == "Alienshot")
             {
                 explode("alienshot", collision);
+            }
+            else if (collision.tag == "Barrera")
+            {
+                explode("barrier", collision);
             }
         }
     }
@@ -66,6 +78,7 @@ public class Proyectil : MonoBehaviour
         {
             speed = 0f;
             anim.SetBool("explodin", true);
+            collision.GetComponent<Barrera>().destructionstate++;
             Destroy(gameObject, 0.5f);
         }
         else if (explosiontype == "ceiling")
