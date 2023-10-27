@@ -88,7 +88,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
             yield return new WaitForSeconds(3);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }

@@ -54,7 +54,7 @@ public class AlienManager : MonoBehaviour
             shottimer += Time.deltaTime;
             ufotimer += Time.deltaTime;
         }
-        if (donespawning && aliencount <= 0)
+        if (donespawning && aliencount <= 0) // when all aliens are killed spawn new ones
         {
             transform.position = Vector3.zero;
             speed = 0;
