@@ -56,7 +56,10 @@ public class Proyectil : MonoBehaviour
             }
             else if (collision.tag == "Alienshot")
             {
-                explode("alienshot", collision);
+                if (collision.GetComponent<Alienshot>().functional == true)
+                {
+                    explode("alienshot", collision);
+                }
             }
             else if (collision.tag == "Barrera")
             {
